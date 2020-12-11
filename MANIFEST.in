@@ -1,0 +1,2 @@
+include versioneer.py
+include easylogger/_version.py

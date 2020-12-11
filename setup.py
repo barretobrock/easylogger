@@ -4,12 +4,13 @@ Resources to build this:
     https://github.com/pypa/sampleproject
 """
 from setuptools import setup, find_packages
+import versioneer
 
 
 setup_args = {
     'name': 'easylogger',
-    'version': '0.1.0',
-    'cmdclass': '',
+    'version': versioneer.get_version(),
+    'cmdclass': versioneer.get_cmdclass(),
     'license': 'MIT',
     'description': 'A relatively simple logging configuration with just enough customization '
                    'for my projects\' needs.',
