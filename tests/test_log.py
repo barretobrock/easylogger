@@ -1,5 +1,5 @@
 import unittest
-from kavalkilu import Log
+from easylogger import Log
 
 
 class TestLogger(unittest.TestCase):
