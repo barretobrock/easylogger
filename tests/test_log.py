@@ -22,6 +22,20 @@ class TestLogger(unittest.TestCase):
         log = Log()
         self.assertTrue(isinstance(log.log_name, str))
         self.assertTrue(isinstance(log.name, str))
+        log.error('Test')
+
+    def test_orphan(self):
+        """Test that handlers are still made in the instance of an orphaned child log"""
+        log = Log(None, child_name='child')
+        log.info('Test')
+        with self.assertRaises(ValueError) as err:
+            raise ValueError('Test')
+
+    def test_filehandler(self):
+        log = Log('test-filehandler', log_to_file=True)
+        log2 = Log(log, child_name='child')
+        log.error('Test exception')
+        log2.info('test')
 
 
 if __name__ == '__main__':

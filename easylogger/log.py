@@ -85,8 +85,8 @@ class Log(Logger):
     """Initiates a logging object to record processes and errors"""
     DEFAULT_LOG_LEVEL = 'INFO'
 
-    def __init__(self, log: Union[str, 'Log', Logger] = None, child_name: str = None, log_level_str: str = None,
-                 log_to_file: bool = False, log_dir: str = None):
+    def __init__(self, log: Union[str, 'Log', Logger] = None, child_name: str = None,
+                 log_level_str: str = None, log_to_file: bool = False, log_dir: str = None):
         """
         Args:
             log: display name of the log. If Log object, will extract name from that.
@@ -108,19 +108,16 @@ class Log(Logger):
         self.is_child = child_name is not None
         self.log_name = log.name if isinstance(log, (Log, Logger)) else log
 
-        # super().__init__(self.log_name)
         # Determine if log is child of other Log objects (if so, it will be attached to that parent log)
         # Instantiate the log object
         if self.is_child:
             # Attach this instance to the parent log
             suffix = '.'.join([self.log_name, child_name])
             super().__init__(suffix, self.DEFAULT_LOG_LEVEL)
-            # self.logger = logging.getLogger(self.log_name).getChild(child_name)
         else:
             # Create logger if it hasn't been created
             super().__init__(self.log_name, self.DEFAULT_LOG_LEVEL)
-            # self.logger = logging.getLogger(self.log_name)
-        self.parent = log if self.is_child else None
+        self.log_parent = log if self.is_child else None
 
         # Check if debugging in pycharm
         # Checking Methods:
@@ -132,11 +129,9 @@ class Log(Logger):
         self._set_log_level(log_level_str)
 
         # Set the log handlers
-        if not self.is_child:
-            # Create file handler for log (children of the object will simply inherit this)
-            if log_to_file:
-                self._build_log_path(log_dir)
-            self._set_handlers(log_to_file)
+        if log_to_file:
+            self._build_log_path(log_dir)
+        self._set_handlers(log_to_file)
         self.info(f'Logging initiated{" for child instance" if self.is_child else ""}.')
 
     def _build_log_path(self, log_dir: str):
@@ -165,8 +160,8 @@ class Log(Logger):
         """
         if log_level_str is None:
             if self.is_child:
-                log_level_str = logging.getLevelName(self.parent.log_level_int) \
-                    if isinstance(self.parent, Log) else self.DEFAULT_LOG_LEVEL
+                log_level_str = logging.getLevelName(self.log_parent.log_level_int) \
+                    if isinstance(self.log_parent, Log) else self.DEFAULT_LOG_LEVEL
             else:
                 # No log level provided. Check if any included as cmd argument
                 log_level_str = LogArgParser(self.is_debugging).log_level_str
