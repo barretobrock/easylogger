@@ -21,7 +21,7 @@ URL_TEMPLATE = 'https://github.com/barretobrock'
 URL = f'{URL_TEMPLATE}/{REPO_NAME}'
 GIT_URL = f'git+{URL}.git#egg={REPO_NAME}'
 VENV_PATH = f'${{HOME}}/venvs/{VENV_NAME}/bin/python3'
-DEP_TEMPLATE = f'git+{URL_TEMPLATE}/{{dep}}/tarball/{MAIN_BRANCH}#egg={{dep}}'
+DEP_TEMPLATE = f'git+{URL_TEMPLATE}/{{dep}}.git#egg={{dep}}'
 DEP_LINKS = [DEP_TEMPLATE.format(dep=x) for x in MY_DEPS]
 
 # ==============================================================================
