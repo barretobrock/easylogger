@@ -200,11 +200,6 @@ class Log(Logger):
             return
         self.error('Uncaught exception', exc_info=(exc_type, exc_value, exc_traceback))
 
-    def _error(self, text: str, incl_info: bool = True):
-        """Error-level logging - private to allow for other log
-         classes to inherit this plus their additional procedures"""
-        self.error(text, exc_info=incl_info)
-
     def error_from_class(self, err_obj: BaseException, text: str):
         """Default wrapper for extracting exceptions from Exception class.
 
@@ -216,7 +211,7 @@ class Log(Logger):
         traceback_msg = '\n'.join(traceback.format_tb(err_obj.__traceback__))
         exception_msg = f'{err_obj.__class__.__name__}: {err_obj}\n{traceback_msg}'
         err_msg = f'{text}\n{exception_msg}'
-        self._error(err_msg)
+        self.error(err_msg)
 
     @staticmethod
     def extract_err() -> Tuple[Optional[type], Optional[BaseException], Optional[TracebackType]]:
