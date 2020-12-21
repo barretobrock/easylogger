@@ -46,7 +46,10 @@ class TestLogger(unittest.TestCase):
         self.assertTrue(len(log2.handlers) == 2)
         log.error('Test exception')
         log2.info('test')
+        log3 = Log(log2, child_name='child of child')
         log2.warning('Hello!')
+        log3.info('HI!')
+        log3.close()
         log2.close()
         log.close()
 

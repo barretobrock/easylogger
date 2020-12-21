@@ -345,6 +345,14 @@ class Log(Logger):
 
     def _build_log_path(self, log_dir: str):
         """Builds a filepath to the log file"""
+        # First just check if the log is a child of another.
+        #   If so, we can bypass the logic below it and use the parent log's file path
+        if self.is_child:
+            try:
+                self.log_path = self.log_parent.log_path
+                return
+            except AttributeError:
+                pass
         # Set name of file
         self.log_filename = f"{self.log_name}"
         # Set log directory (if none)
