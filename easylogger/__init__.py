@@ -1,4 +1,6 @@
-from .log import Log, LogArgParser, ArgParse
+from .log import Log
+from .argparser import ArgParse, LogArgParser
+from .handlers import CustomTimedRotatingFileHandler
 
 from ._version import get_versions
 __version__ = get_versions()['version']
