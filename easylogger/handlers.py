@@ -187,7 +187,7 @@ class CustomTimedRotatingFileHandler(TimedRotatingFileHandler):
             for s in self.get_files_to_delete(new_filename):
                 try:
                     os.remove(s)
-                except:
+                except Exception as e:
                     pass
 
         new_rollover_at = self.compute_rollover(cur_time)
